@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import About from "./components/About";
 import { useState } from "react";
 import Alert from "./components/Alert";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
   const [mode, setMode] = useState("light");
@@ -22,7 +23,7 @@ function App() {
   const togglemode = () => {
     if (mode === "light") {
       setMode("dark");
-      document.body.style.backgroundColor = "gray";
+      document.body.style.backgroundColor = "#042743";
       showAlert("Dark mode has been enabled", "success");
     } else {
       setMode("light");
@@ -32,16 +33,27 @@ function App() {
   };
   return (
     <div>
-      <Navbar title="TextUtils" mode={mode} togglemode={togglemode} />
-      <Alert alert={alert} />
-      <div className="container">
-        <TextForm
-          heading="Enter text to analyze"
-          mode={mode}
-          showAlert={showAlert}
-        />
-        {/* <About /> */}
-      </div>
+      <Router>
+        <Navbar title="TextUtils" mode={mode} togglemode={togglemode} />
+        <Alert alert={alert} />
+        <div className="container my-3">
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={
+                <TextForm
+                  heading="Try TextUtils - Word Counter, Character Counter, Remove extra spaces"
+                  mode={mode}
+                  showAlert={showAlert}
+                />
+              }
+            />
+
+            <Route exact path="/about" element={<About mode={mode} />} />
+          </Routes>
+        </div>
+      </Router>
     </div>
   );
 }
