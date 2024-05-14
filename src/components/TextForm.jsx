@@ -22,6 +22,10 @@ export default function TextForm({ heading, mode, showAlert }) {
     setText(newText);
     showAlert("Cleared all text!", "danger");
   }
+  function handleCopyClick() {
+    navigator.clipboard.writeText(text);
+    showAlert("Copied to Clipboard!", "success");
+  }
   function handleOnchange(event) {
     setText(event.target.value);
   }
@@ -76,6 +80,13 @@ export default function TextForm({ heading, mode, showAlert }) {
         >
           Clear Text
         </button>
+        <button
+          disabled={text.length === 0}
+          className="btn btn-primary mx-2 my-2"
+          onClick={handleCopyClick}
+        >
+          Copy Text
+        </button>
       </div>
       <div
         className="container my-2"
@@ -86,7 +97,7 @@ export default function TextForm({ heading, mode, showAlert }) {
         <h1>Your text Summary</h1>
         <p>
           {
-            text.split(" ").filter((element) => {
+            text.split(/\s+/).filter((element) => {
               return element.length !== 0;
             }).length
           }{" "}
